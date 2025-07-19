@@ -5,11 +5,15 @@ app.set("view engine","ejs");
 app.use(express.urlencoded({extended:true}));
 app.use(express.static('Public'));
 
-const mongoose=require("mongoose");
-mongoose.connect("mongodb://localhost:27017/todo");
-const trySchema=new mongoose.Schema({
-    name:String
+const mongoose = require("mongoose");
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log("✅ Connected to MongoDB Atlas"))
+  .catch((err) => console.error("❌ MongoDB connection error:", err));
+
+const trySchema = new mongoose.Schema({
+  name: String
 });
+
 const item =mongoose.model("task",trySchema);
 const todo=new item ({
     name:"Create some videos"
